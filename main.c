@@ -13,6 +13,12 @@
 
 int main(int argc,char* argv[])
 {
+    if(argc!=3)
+    {
+        printf("sorry,you should input key and value\n");
+        exit(1);
+    }
+
     redisContext *redis_conn = NULL;
     int ret=0;
     char strVal[100]={0};
@@ -24,20 +30,22 @@ int main(int argc,char* argv[])
         exit(1);
     }
 
-    ret=rop_set_string(redis_conn,"aixi","lol");
+    ret=rop_set_string(redis_conn,argv[1],argv[2]);
     if(ret == -1)
     {
-        LOG(REDIS_TEST_MODULE,REDIS_TEST_PROC,"set %s %s error","aixi","lol");
+        LOG(REDIS_TEST_MODULE,REDIS_TEST_PROC,"set %s %s error",argv[1],argv[2]);
         exit(1);
     }
+    printf("-------------SET SUCCEED-------------\n");
 
-    ret=rop_get_string(redis_conn,"aixi",strVal);
+    ret=rop_get_string(redis_conn,argv[1],strVal);
     if(ret == -1)
     {
-        printf("!!!!!");
-        LOG(REDIS_TEST_MODULE,REDIS_TEST_PROC,"get strVal error");
+        printf("!!!!!!!!!!!!!!!\n");
+        LOG(REDIS_TEST_MODULE,REDIS_TEST_PROC,"get %s error",argv[1]);
         exit(1);
     }
+    printf("-------------GET SUCCEED-------------\n");
     printf("strVal:%s\n",strVal);
 
     rop_disconnect(redis_conn);
